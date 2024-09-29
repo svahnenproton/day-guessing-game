@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dates</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: white;
+        }
+
+        .monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday {
+            border: none;
+            width: 320px;
+            height: 45px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px #999;
+	    margin: 4px;
+            font-weight: bold;
+        }
+
+        .monday {
+            background-color: #4f7bb0;
+            border: 2px solid #294d78;
+            color: #294d78;
+        }
+        .monday:active { transform: translateY(4px); background-color: #294d78; }
+
+        .tuesday {
+            background-color: #8498b0;
+            border: 2px solid #505e6e;
+            color: #505e6e;
+        }
+        .tuesday:active { transform: translateY(4px); background-color: #505e6e; }
+
+        .wednesday {
+            background-color: #e6d66e;
+            border: 2px solid #a89728;
+            color: #a89728;
+        }
+        .wednesday:active { transform: translateY(4px); background-color: #a89728; }
+
+        .thursday {
+            background-color: #f2c746;
+            border: 2px solid #c9a22c;
+            color: #c9a22c;
+        }
+        .thursday:active { transform: translateY(4px); background-color: #c9a22c; }
+
+        .friday {
+            background-color: #75ba90;
+            border: 2px solid #4a8561;
+            color: #4a8561;
+        }
+        .friday:active { transform: translateY(4px); background-color: #4a8561; }
+
+        .saturday {
+            background-color: #cc5a69;
+            border: 2px solid #9c3542;
+            color: #9c3542;
+        }
+        .saturday:active { transform: translateY(4px); background-color: #9c3542; }
+
+        .sunday {
+            background-color: #ffffff;
+            border: 2px solid #bbbbbb;
+            color: #bbbbbb;
+        }
+        .sunday:active { transform: translateY(4px); background-color: #bbbbbb; }
+
+        .reset {
+            width: 160px;
+            height: 45px;
+            color: #bbbbbb;
+            font-family: Comic Sans MS;
+            font-weight: bold;
+            background-color: #ffffff;
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            padding: 8px;
+            border-radius: 12px;
+            border: 2px solid #bbbbbb;
+            box-shadow: 0 4px #999;
+        }
+        .reset:active { transform: translateY(4px); background-color: #bbbbbb; }
+
+        .date {
+            font-family: Comic Sans MS;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px;
+        }
+        .titletext {
+            font-family: Comic Sans MS;
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px;
+            color: red; 
+        }
+        .score {
+            font-family: Comic Sans MS;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 5px;
+        }
+        /* Style for the result message */
+        #result {
+            font-family: Comic Sans MS;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 5px;
+            color: blue;
+        }
+
+        /* Style when the result is correct */
+        #result.correct {
+            color: green; /* Green text color */
+        }
+
+        /* Style when the result is incorrect */
+        #result.incorrect {
+            color: red; /* Red text color */
+        }
+    </style>
+</head>
+<body>
+    <p class="titletext"></p>
+    <div class="date" id="randomDate">YYYY-MM-DD</div>
+    <div class="buttons">
+        <button class="monday" onclick="checkDay('Monday')">Monday</button>
+        <button class="tuesday" onclick="checkDay('Tuesday')">Tuesday</button>
+        <button class="wednesday" onclick="checkDay('Wednesday')">Wednesday</button>
+        <button class="thursday" onclick="checkDay('Thursday')">Thursday</button>
+        <button class="friday" onclick="checkDay('Friday')">Friday</button>
+        <button class="saturday" onclick="checkDay('Saturday')">Saturday</button>
+        <button class="sunday" onclick="checkDay('Sunday')">Sunday</button>
+    </div>
+    <div id="result">Let's Play</div>
+    <div class="score" id="score">Score: 0/0 (0%)</div>
+    <button class="reset" onclick="resetGame()">Reset</button>
+
+<script>
+    // Initialize score variables
+    let correctAnswers = 0;
+    let totalAnswers = 0;
+
+    // Generate a random date between the specified start and end date
+    function randomDate(start, end) {
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
+        const randomDate = new Date(randomTime);
+        return randomDate.toISOString().split('T')[0]; // Returns date in YYYY-MM-DD
+    }
+
+    // Display the initial random date and message
+    let generatedDate = randomDate('1900-01-01', '2099-12-31');
+    document.getElementById('randomDate').innerText = generatedDate;
+    document.getElementById('result').innerText = "Let's Play"; // Set initial message
+    document.getElementById('result').style.color = 'blue'; // Set initial color to blue
+
+    // Function to check the user's guess
+    function checkDay(selectedDay) {
+        const correctDay = new Date(generatedDate).toLocaleString('en-US', { weekday: 'long' });
+        const result = document.getElementById('result');
+        const body = document.body;
+        totalAnswers++; // Increment total attempts
+
+        // Disable all buttons to prevent further pressing
+        disableButtons(true);
+
+        // Clear previous classes
+        result.classList.remove('correct', 'incorrect');
+
+        if (selectedDay === correctDay) {
+            result.innerText = `Correct!`;
+            result.style.color = 'green'; // Change color to green for correct
+            result.classList.add('correct'); // Add the 'correct' class
+            correctAnswers++; // Increment correct answers
+            body.style.backgroundColor = '#8ef595'; // Change background color to green
+        } else {
+            result.innerText = `Incorrect!`;
+            result.style.color = 'red'; // Change color to red for incorrect
+            result.classList.add('incorrect'); // Add the 'incorrect' class
+            body.style.backgroundColor = '#f0a59e'; // Change background color to red
+        }
+
+        // Update the score display
+        updateScore();
+
+        // Wait for 1 second, then reset background color and re-enable buttons
+        setTimeout(function () {
+            body.style.backgroundColor = 'white'; // Reset background color to white
+            generatedDate = randomDate('1900-01-01', '2099-12-31'); // Generate new date
+            document.getElementById('randomDate').innerText = generatedDate; // Display new date
+            disableButtons(false); // Re-enable buttons
+        }, 1000);
+    }
+
+    // Function to update the score
+    function updateScore() {
+        // If totalAnswers is 0, set percentage to 0% to avoid NaN
+        let percentage = totalAnswers === 0 ? 0 : ((correctAnswers / totalAnswers) * 100).toFixed(2);
+        document.getElementById('score').innerText = `Score: ${correctAnswers}/${totalAnswers} (${percentage}%)`;
+    }
+
+    // Function to reset the game
+    function resetGame() {
+        correctAnswers = 0;
+        totalAnswers = 0;
+        updateScore();
+        document.getElementById('result').innerText = "Let's Play"; // Set message to "Let's Play"
+        document.getElementById('result').style.color = 'blue'; // Ensure color is blue when resetting
+        generatedDate = randomDate('1900-01-01', '2099-12-31');
+        document.getElementById('randomDate').innerText = generatedDate;
+    }
+
+    // Function to enable or disable the day buttons
+    function disableButtons(disable) {
+        const buttons = document.querySelectorAll('.buttons button');
+        buttons.forEach(button => {
+            button.disabled = disable; // Disable or enable buttons based on the argument
+            if (disable) {
+                button.style.cursor = 'not-allowed'; // Change cursor to 'not-allowed' when buttons are disabled
+            } else {
+                button.style.cursor = 'pointer'; // Reset cursor to 'pointer' when buttons are enabled
+            }
+        });
+    }
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
+
+</body>
+</html>
