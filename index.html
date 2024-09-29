@@ -6,9 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dates</title>
     <style>
+	    @font-face {
+        font-family: 'Bookerly';
+        src: 
+			url('fonts/Bookerly.ttf') format('truetype');
+			url('fonts/Bookerly Bold.ttf') format('truetype');
+			url('fonts/Bookerly Bold Italic.ttf') format('truetype');
+        }
         body {
             text-align: center;
-            background-color: white;
+            background-color: #FFFFFF;
+			font-family: Bookerly;
         }
 
         .monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday {
@@ -18,10 +26,11 @@
             text-align: center;
             text-decoration: none;
             display: inline-block;
+			font-family: Bookerly;
             font-size: 16px;
             border-radius: 12px;
             box-shadow: 0 4px #999;
-	    margin: 4px;
+	        margin: 4px;
             font-weight: bold;
         }
 
@@ -78,7 +87,7 @@
             width: 160px;
             height: 45px;
             color: #bbbbbb;
-            font-family: Comic Sans MS;
+            font-family: Bookerly;
             font-weight: bold;
             background-color: #ffffff;
             border: none;
@@ -94,28 +103,28 @@
         .reset:active { transform: translateY(4px); background-color: #bbbbbb; }
 
         .date {
-            font-family: Comic Sans MS;
-            font-size: 24px;
+            font-family: Bookerly;
+            font-size: 48px;
             font-weight: bold;
             margin: 10px;
         }
         .titletext {
-            font-family: Comic Sans MS;
+            font-family: Bookerly;
             font-size: 36px;
             font-weight: bold;
             margin: 10px;
             color: red; 
         }
         .score {
-            font-family: Comic Sans MS;
-            font-size: 18px;
+            font-family: Bookerly;
+            font-size: 28px;
             font-weight: bold;
             margin: 5px;
         }
         /* Style for the result message */
         #result {
-            font-family: Comic Sans MS;
-            font-size: 18px;
+            font-family: Bookerly;
+            font-size: 28px;
             font-weight: bold;
             margin: 5px;
             color: blue;
@@ -144,7 +153,7 @@
         <button class="saturday" onclick="checkDay('Saturday')">Saturday</button>
         <button class="sunday" onclick="checkDay('Sunday')">Sunday</button>
     </div>
-    <div id="result">Let's Play</div>
+    <div id="result">Let’s Play</div>
     <div class="score" id="score">Score: 0/0 (0%)</div>
     <button class="reset" onclick="resetGame()">Reset</button>
 
@@ -165,7 +174,7 @@
     // Display the initial random date and message
     let generatedDate = randomDate('1900-01-01', '2099-12-31');
     document.getElementById('randomDate').innerText = generatedDate;
-    document.getElementById('result').innerText = "Let's Play"; // Set initial message
+    document.getElementById('result').innerText = "Let’s Play"; // Set initial message
     document.getElementById('result').style.color = 'blue'; // Set initial color to blue
 
     // Function to check the user's guess
@@ -199,7 +208,7 @@
 
         // Wait for 1 second, then reset background color and re-enable buttons
         setTimeout(function () {
-            body.style.backgroundColor = 'white'; // Reset background color to white
+            body.style.backgroundColor = '#FFFFFF'; // Reset background color to white
             generatedDate = randomDate('1900-01-01', '2099-12-31'); // Generate new date
             document.getElementById('randomDate').innerText = generatedDate; // Display new date
             disableButtons(false); // Re-enable buttons
@@ -218,7 +227,7 @@
         correctAnswers = 0;
         totalAnswers = 0;
         updateScore();
-        document.getElementById('result').innerText = "Let's Play"; // Set message to "Let's Play"
+        document.getElementById('result').innerText = "Let’s Play"; // Set message to "Let's Play"
         document.getElementById('result').style.color = 'blue'; // Ensure color is blue when resetting
         generatedDate = randomDate('1900-01-01', '2099-12-31');
         document.getElementById('randomDate').innerText = generatedDate;
